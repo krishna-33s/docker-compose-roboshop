@@ -11,7 +11,7 @@ services:
     - cart
     - shipping
     - payment
-    
+
   catalogue:
     build: ./catalogue
     image: krishna88s/catalogue:1.0
@@ -88,4 +88,4 @@ networks:
   default:
     driver: bridge
     name: roboshop
-    external: false
+    external: false #this will create the network automatically without doing manually
