@@ -1,0 +1,91 @@
+services:
+  frontend:
+    build: ./frontend
+    image: krishna88s/frontend:1.0
+    container_name: frontend
+    ports:
+    - "80:80"
+    depends_on:
+    - catalogue
+    - user
+    - cart
+    - shipping
+    - payment
+    
+  catalogue:
+    build: ./catalogue
+    image: krishna88s/catalogue:1.0
+    container_name: catalogue
+    depends-on:
+    - mongodb
+
+  cart:
+    build: ./cart
+    image: krishna88s/cart:1.0
+    container_name: cart
+    depends-on:
+    - redis
+    - catalogue 
+
+  user:
+    build: ./user
+    image: krishna88s/user:1.0
+    container_name: user
+    depends-on:
+    - redis
+    - mongodb
+
+  shipping:
+    build: ./shipping
+    image: krishna88s/shipping:1.0
+    container_name: shipping
+    depends-on:
+    - mysql
+    - cart 
+
+  payment:
+    build: ./payment
+    image: krishna88s/payment:1.0
+    container_name: payment
+    environment:
+      CART_HOST: "cart"
+      CART_PORT: "8080"
+      USER_HOST: "user"
+      USER_PORT: "8080"
+      AMQP_HOST: "rabbitmq"
+      AMQP_USER: "roboshop"
+      AMQP_PASS: "roboshop123"
+    depends-on:
+    - rabbitmq
+    - user
+    - cart
+
+# databases
+  mongodb:
+    build: ./mongodb
+    image: krishna88s/mongodb:1.0
+    container_name: mongodb
+
+  redis:
+    build: ./redis
+    image: krishna88s/redis:1.0
+    container_name: redis
+
+  mysql:
+    build: ./mysql
+    image: krishna88s/mysql:1.0
+    container_name: mysql
+
+  rabbitmq:
+    build: ./rabbitmq
+    image: krishna88s/rabbitmq:1.0
+    container_name: rabbitmq
+    environment: 
+      RABBITMQ_DEFAULT_USER: roboshop
+      RABBITMQ_DEFAULT_PASS: roboshop123
+
+networks:
+  default:
+    driver: bridge
+    name: roboshop
+    external: false
