@@ -16,14 +16,14 @@ services:
     build: ./catalogue
     image: krishna88s/catalogue:1.0
     container_name: catalogue
-    depends-on:
+    depends_on:
     - mongodb
 
   cart:
     build: ./cart
     image: krishna88s/cart:1.0
     container_name: cart
-    depends-on:
+    depends_on:
     - redis
     - catalogue 
 
@@ -31,7 +31,7 @@ services:
     build: ./user
     image: krishna88s/user:1.0
     container_name: user
-    depends-on:
+    depends_on:
     - redis
     - mongodb
 
@@ -39,7 +39,7 @@ services:
     build: ./shipping
     image: krishna88s/shipping:1.0
     container_name: shipping
-    depends-on:
+    depends_on:
     - mysql
     - cart 
 
@@ -55,7 +55,7 @@ services:
       AMQP_HOST: "rabbitmq"
       AMQP_USER: "roboshop"
       AMQP_PASS: "roboshop123"
-    depends-on:
+    depends_on:
     - rabbitmq
     - user
     - cart
