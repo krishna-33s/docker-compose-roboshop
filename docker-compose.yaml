@@ -65,16 +65,22 @@ services:
     build: ./mongodb
     image: krishna88s/mongodb:1.0
     container_name: mongodb
+    volumes:
+    - /:/data/db
 
   redis:
     build: ./redis
     image: krishna88s/redis:1.0
     container_name: redis
+    volumes:
+    - redis:/data
 
   mysql:
     build: ./mysql
     image: krishna88s/mysql:1.0
     container_name: mysql
+    volumes:
+    - mysql:/var/lib/mysql
 
   rabbitmq:
     build: ./rabbitmq
@@ -83,9 +89,17 @@ services:
     environment: 
       RABBITMQ_DEFAULT_USER: roboshop
       RABBITMQ_DEFAULT_PASS: roboshop123
+    volumes:
+    - rabbitmq:/var/lib/rabbitmq
 
 networks:
   default:
     driver: bridge
     name: roboshop
     external: false #this will create the network automatically without doing manually
+
+volumes:
+  mongodb:
+  redis:
+  mysql:
+  rabbitmq:
